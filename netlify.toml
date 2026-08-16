@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Route the public API to the serverless function. Must come BEFORE the
+# SPA catch-all so Netlify routes /api/v1/chat to the function, not index.html.
+[[redirects]]
+  from = "/api/v1/chat"
+  to = "/.netlify/functions/api-chat"
+  status = 200
+  force = true
+
+# SPA fallback so client-side routes (/docs, /playground, etc.) resolve.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
